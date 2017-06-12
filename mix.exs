@@ -18,7 +18,8 @@ defmodule Protox.Conformance.Mixfile do
 
   defp deps do
     [
-      {:protox, ">= 0.0.0"},
+      # {:protox, ">= 0.0.0"},
+      {:protox,  path: "/Users/hal/code/protox"},
     ]
   end
 end

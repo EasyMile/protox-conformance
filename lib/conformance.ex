@@ -47,7 +47,7 @@ defmodule Protox.Conformance.Escript do
     },
     log_file
   ) do
-    IO.binwrite(log_file, "Will parse protobuf\n")
+    IO.binwrite(log_file, "Will parse protobuf, output to protobuf\n")
 
     {:protobuf_payload, payload} = req.payload
     case TestAllTypes.decode(payload) do
@@ -63,17 +63,45 @@ defmodule Protox.Conformance.Escript do
   end
 
 
-  # All JSON related tests are skipped.
+  defp handle_request(
+    {
+      :ok,
+      req = %ConformanceRequest{
+        requested_output_format: :JSON,
+        payload: {:protobuf_payload, _}
+      }
+    },
+    log_file
+  ) do
+    IO.binwrite(log_file, "Will parse protobuf; output to JSON\n")
+
+    {:protobuf_payload, payload} = req.payload
+    case TestAllTypes.decode(payload) do
+      {:ok, msg} ->
+        IO.binwrite(log_file, "Parse: success.\n")
+        encoded_payload = msg |> Protox.EncodeJson.encode()
+        IO.binwrite(log_file, "#{inspect msg}\n")
+        IO.binwrite(log_file, "\n")
+        IO.binwrite(log_file, "#{encoded_payload}\n")
+        %ConformanceResponse{result: {:json_payload, encoded_payload}}
+
+      {:error, reason} ->
+        IO.binwrite(log_file, "Parse error: #{inspect reason}\n")
+        %ConformanceResponse{result: {:parse_error, "Parse error: #{inspect reason}"}}
+    end
+  end
+
+
   defp handle_request({:ok, req}, log_file) do
     skip_reason = case {req.requested_output_format, req.payload} do
       {:UNSPECIFIED, _} ->
-        "unspecified input"
+        "unspecified output"
 
-      {:JSON, _} ->
-        "json input"
+      {:JSON, {_, _}} ->
+        "json output"
 
       {:PROTOBUF, {:json_payload, _}} ->
-        "json output"
+        "json input"
     end
     IO.binwrite(log_file, "SKIPPED\n")
     IO.binwrite(log_file, "Reason: #{inspect skip_reason}\n")
