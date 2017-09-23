@@ -11,14 +11,14 @@ Here's how to launch the conformance test:
 * Get conformance-test-runner (https://github.com/google/protobuf/tree/master/conformance)
 * `mix protox.conformance --runner=/path/to/conformance-test-runner`
   A report will be generated in a file named `conformance_report.txt`.
-  If everything's fine, something like the following should be displayed:
+  If everything's fine, something like the following should be displayed (protobuf 3.4.1):
 
   ```
   CONFORMANCE TEST BEGIN ====================================
-
-  CONFORMANCE SUITE PASSED: 188 successes, 423 skipped, 0 expected failures, 0 unexpected failures.
-  ```
   
+  CONFORMANCE SUITE PASSED: 386 successes, 425 skipped, 0 expected failures, 0 unexpected failures.
+  ```
+
 ## Why a different repository?
 
 `conformance-test-runner` needs an executable which reads and writes on standard i/o. Thus we wrote an escript that wraps protox.

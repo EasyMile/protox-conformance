@@ -27,7 +27,7 @@ defmodule Protox.Conformance.Escript do
         :stdio
         |> IO.binread(len)
         |> dump_data(log_file)
-        |> ConformanceRequest.decode()
+        |> Conformance.ConformanceRequest.decode()
         |> handle_request(log_file)
         |> make_message_bytes()
         |> output(log_file)
@@ -40,9 +40,9 @@ defmodule Protox.Conformance.Escript do
   defp handle_request(
     {
       :ok,
-      req = %ConformanceRequest{
+      req = %Conformance.ConformanceRequest{
         requested_output_format: :PROTOBUF,
-        payload: {:protobuf_payload, _}
+        payload: {:protobuf_payload, _},
       }
     },
     log_file
@@ -50,15 +50,27 @@ defmodule Protox.Conformance.Escript do
     IO.binwrite(log_file, "Will parse protobuf\n")
 
     {:protobuf_payload, payload} = req.payload
-    case TestAllTypes.decode(payload) do
+
+    proto_type = case req.message_type do
+      "protobuf_test_messages.proto3.TestAllTypesProto3" ->
+        ProtobufTestMessages.Proto3.TestAllTypesProto3
+
+      "protobuf_test_messages.proto2.TestAllTypesProto2" ->
+        ProtobufTestMessages.Proto2.TestAllTypesProto2
+
+      "" ->
+        ProtobufTestMessages.Proto3.TestAllTypesProto3
+    end
+
+    case proto_type.decode(payload) do
       {:ok, msg} ->
         IO.binwrite(log_file, "Parse: success.\n")
         encoded_payload = msg |> Protox.Encode.encode() |> :binary.list_to_bin()
-        %ConformanceResponse{result: {:protobuf_payload, encoded_payload}}
+        %Conformance.ConformanceResponse{result: {:protobuf_payload, encoded_payload}}
 
       {:error, reason} ->
         IO.binwrite(log_file, "Parse error: #{inspect reason}\n")
-        %ConformanceResponse{result: {:parse_error, "Parse error: #{inspect reason}"}}
+        %Conformance.ConformanceResponse{result: {:parse_error, "Parse error: #{inspect reason}"}}
     end
   end
 
@@ -78,13 +90,13 @@ defmodule Protox.Conformance.Escript do
     IO.binwrite(log_file, "SKIPPED\n")
     IO.binwrite(log_file, "Reason: #{inspect skip_reason}\n")
     IO.binwrite(log_file, "#{inspect req}\n")
-    %ConformanceResponse{result: {:skipped, "SKIPPED"}}
+    %Conformance.ConformanceResponse{result: {:skipped, "SKIPPED"}}
   end
 
 
   defp handle_request({:error, reason}, log_file) do
     IO.binwrite(log_file, "ConformanceRequest parse error: #{inspect reason}\n")
-    %ConformanceResponse{result: {:parse_error, "Parse error: #{inspect reason}"}}
+    %Conformance.ConformanceResponse{result: {:parse_error, "Parse error: #{inspect reason}"}}
   end
 
 

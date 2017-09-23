@@ -8,7 +8,7 @@ defmodule Protox.Conformance.Defs do
   use Protox.Define,
     enums: [
       {
-        WireFormat,
+        Conformance.WireFormat,
         [
           {0, :UNSPECIFIED},
           {1, :PROTOBUF},
@@ -16,7 +16,7 @@ defmodule Protox.Conformance.Defs do
         ]
       },
       {
-        NestedEnum,
+        ProtobufTestMessages.Proto2.NestedEnum,
         [
           {0, :FOO},
           {1, :BAR},
@@ -25,7 +25,24 @@ defmodule Protox.Conformance.Defs do
         ]
       },
       {
-        ForeignEnum,
+        ProtobufTestMessages.Proto2.ForeignEnum,
+        [
+          {0, :FOREIGN_FOO},
+          {1, :FOREIGN_BAR},
+          {2, :FOREIGN_BAZ},
+        ]
+      },
+      {
+        ProtobufTestMessages.Proto3.NestedEnum,
+        [
+          {0, :FOO},
+          {1, :BAR},
+          {2, :BAZ},
+          {-1, :NEG},
+        ]
+      },
+      {
+        ProtobufTestMessages.Proto3.ForeignEnum,
         [
           {0, :FOREIGN_FOO},
           {1, :FOREIGN_BAR},
@@ -35,15 +52,16 @@ defmodule Protox.Conformance.Defs do
     ],
     messages: [
       {
-        ConformanceRequest,
+        Conformance.ConformanceRequest,
         [
           {1, :none, :protobuf_payload, {:oneof, :payload}, :bytes},
           {2, :none, :json_payload, {:oneof, :payload}, :string},
-          {3, :none, :requested_output_format, {:default, :UNSPECIFIED}, {:enum, WireFormat}},
+          {3, :none, :requested_output_format, {:default, :UNSPECIFIED}, {:enum, Conformance.WireFormat}},
+          {4, :none, :message_type, {:default, ""}, :string}
         ]
       },
       {
-        ConformanceResponse,
+        Conformance.ConformanceResponse,
         [
           {1, :none, :parse_error, {:oneof, :result}, :string},
           {6, :none, :serialize_error, {:oneof, :result}, :string},
@@ -54,47 +72,47 @@ defmodule Protox.Conformance.Defs do
         ]
       },
       {
-        NestedMessage,
+        ProtobufTestMessages.Proto2.NestedMessage,
         [
-          {1, :none, :a, {:default, 0}, :int32},
-          {2, :none, :corecursive, {:default, nil}, {:message, TestAllTypes}},
+          {1, :none, :a, {:default, nil}, :int32},
+          {2, :none, :corecursive, {:default, nil}, {:message, ProtobufTestMessages.Proto2.TestAllTypesProto2}},
         ]
       },
       {
-        ForeignMessage,
+        ProtobufTestMessages.Proto2.ForeignMessage,
         [
-          {1 , :none, :c, {:default, 0}, :int32},
+          {1 , :none, :c, {:default, nil}, :int32},
         ]
       },
       {
-        TestAllTypes,
+        ProtobufTestMessages.Proto2.TestAllTypesProto2,
         [
-          {1 , :none, :optional_int32   , {:default, 0}, :int32},
-          {2 , :none, :optional_int64   , {:default, 0}, :int64},
-          {3 , :none, :optional_uint32  , {:default, 0}, :uint32},
-          {4 , :none, :optional_uint64  , {:default, 0}, :uint64},
-          {5 , :none, :optional_sint32  , {:default, 0}, :sint32},
-          {6 , :none, :optional_sint64  , {:default, 0}, :sint64},
-          {7 , :none, :optional_fixed32 , {:default, 0}, :fixed32},
-          {8 , :none, :optional_fixed64 , {:default, 0}, :fixed64},
-          {9 , :none, :optional_sfixed32, {:default, 0}, :sfixed32},
-          {10, :none, :optional_sfixed64, {:default, 0}, :sfixed64},
-          {11, :none, :optional_float   , {:default, 0}, :float},
-          {12, :none, :optional_double  , {:default, 0}, :double},
-          {13, :none, :optional_bool    , {:default, false}, :bool},
+          {1 , :none, :optional_int32   , {:default, nil}, :int32},
+          {2 , :none, :optional_int64   , {:default, nil}, :int64},
+          {3 , :none, :optional_uint32  , {:default, nil}, :uint32},
+          {4 , :none, :optional_uint64  , {:default, nil}, :uint64},
+          {5 , :none, :optional_sint32  , {:default, nil}, :sint32},
+          {6 , :none, :optional_sint64  , {:default, nil}, :sint64},
+          {7 , :none, :optional_fixed32 , {:default, nil}, :fixed32},
+          {8 , :none, :optional_fixed64 , {:default, nil}, :fixed64},
+          {9 , :none, :optional_sfixed32, {:default, nil}, :sfixed32},
+          {10, :none, :optional_sfixed64, {:default, nil}, :sfixed64},
+          {11, :none, :optional_float   , {:default, nil}, :float},
+          {12, :none, :optional_double  , {:default, nil}, :double},
+          {13, :none, :optional_bool    , {:default, nil}, :bool},
           {14, :none, :optional_string  , {:default, ""}, :string},
           {15, :none, :optional_bytes   , {:default, <<>>}, :bytes},
 
-          {18, :none, :optional_nested_message, {:default, nil}, {:message, NestedMessage}},
-          {19, :none, :optional_foreign_message, {:default, nil}, {:message, ForeignMessage}},
+          {18, :none, :optional_nested_message, {:default, nil}, {:message, ProtobufTestMessages.Proto2.NestedMessage}},
+          {19, :none, :optional_foreign_message, {:default, nil}, {:message, ProtobufTestMessages.Proto2.ForeignMessage}},
 
-          {21, :none, :optional_nested_enum, {:default, :FOO}, {:enum, NestedEnum}},
-          {22, :none, :optional_foreign_enum, {:default, :FOREIGN_FOO}, {:enum, ForeignEnum}},
+          {21, :none, :optional_nested_enum, {:default, :FOO}, {:enum, ProtobufTestMessages.Proto2.NestedEnum}},
+          {22, :none, :optional_foreign_enum, {:default, :FOREIGN_FOO}, {:enum, ProtobufTestMessages.Proto2.ForeignEnum}},
 
           {24, :none, :optional_string_piece, {:default, ""}, :string},
           {25, :none, :optional_cord, {:default, ""}, :string},
 
-          {27, :none, :recursive_message, {:default, nil}, {:message, TestAllTypes}},
+          {27, :none, :recursive_message, {:default, nil}, {:message, ProtobufTestMessages.Proto2.TestAllTypesProto2}},
 
           {31, :repeated, :repeated_int32, :packed, :int32},
           {32, :repeated, :repeated_int64, :packed, :int64},
@@ -112,11 +130,11 @@ defmodule Protox.Conformance.Defs do
           {44, :repeated, :repeated_string, :unpacked, :string},
           {45, :repeated, :repeated_bytes, :unpacked, :bytes},
 
-          {48, :repeated, :repeated_nested_message, :unpacked, {:message, NestedMessage}},
-          {49, :repeated, :repeated_foreign_message, :unpacked, {:message, ForeignMessage}},
+          {48, :repeated, :repeated_nested_message, :unpacked, {:message, ProtobufTestMessages.Proto2.NestedMessage}},
+          {49, :repeated, :repeated_foreign_message, :unpacked, {:message, ProtobufTestMessages.Proto2.ForeignMessage}},
 
-          {51, :repeated, :repeated_nested_enum, :packed, {:enum, NestedEnum}},
-          {52, :repeated, :repeated_foreign_enum, :packed, {:enum, ForeignEnum}},
+          {51, :repeated, :repeated_nested_enum, :packed, {:enum, ProtobufTestMessages.Proto2.NestedEnum}},
+          {52, :repeated, :repeated_foreign_enum, :packed, {:enum, ProtobufTestMessages.Proto2.ForeignEnum}},
 
           {54, :repeated, :repeated_string_piece, :unpacked, :string},
           {55, :repeated, :repeated_cord, :unpacked, :string},
@@ -136,20 +154,120 @@ defmodule Protox.Conformance.Defs do
           {68, :none, :map_bool_bool, :map, {:bool, :bool}},
           {69, :none, :map_string_string, :map, {:string, :string}},
           {70, :none, :map_string_bytes, :map, {:string, :bytes}},
-          {71, :none, :map_string_nested_message, :map, {:string, {:message, NestedMessage}}},
-          {72, :none, :map_string_foreign_message, :map, {:string, {:message, ForeignMessage}}},
-          {73, :none, :map_string_nested_enum, :map, {:string, {:enum, NestedEnum}}},
-          {74, :none, :map_string_foreign_enum, :map, {:string, {:enum, ForeignEnum}}},
+          {71, :none, :map_string_nested_message, :map, {:string, {:message, ProtobufTestMessages.Proto2.NestedMessage}}},
+          {72, :none, :map_string_foreign_message, :map, {:string, {:message, ProtobufTestMessages.Proto2.ForeignMessage}}},
+          {73, :none, :map_string_nested_enum, :map, {:string, {:enum, ProtobufTestMessages.Proto2.NestedEnum}}},
+          {74, :none, :map_string_foreign_enum, :map, {:string, {:enum, ProtobufTestMessages.Proto2.ForeignEnum}}},
 
           {111, :none, :oneof_uint32, {:oneof, :oneof_field}, :uint32},
-          {112, :none, :oneof_nested_message, {:oneof, :oneof_field}, {:message, NestedMessage}},
+          {112, :none, :oneof_nested_message, {:oneof, :oneof_field}, {:message, ProtobufTestMessages.Proto2.NestedMessage}},
           {113, :none, :oneof_string, {:oneof, :oneof_field}, :string},
           {114, :none, :oneof_bytes, {:oneof, :oneof_field}, :bytes},
           {115, :none, :oneof_bool, {:oneof, :oneof_field}, :bool},
           {116, :none, :oneof_uint64, {:oneof, :oneof_field}, :uint64},
           {117, :none, :oneof_float, {:oneof, :oneof_field}, :float},
           {118, :none, :oneof_double, {:oneof, :oneof_field}, :double},
-          {119, :none, :oneof_enum, {:oneof, :oneof_field}, {:enum, NestedEnum}},
+          {119, :none, :oneof_enum, {:oneof, :oneof_field}, {:enum, ProtobufTestMessages.Proto2.NestedEnum}},
+
+        ]
+      },
+      {
+        ProtobufTestMessages.Proto3.NestedMessage,
+        [
+          {1, :none, :a, {:default, 0}, :int32},
+          {2, :none, :corecursive, {:default, nil}, {:message, ProtobufTestMessages.Proto3.TestAllTypesProto3}},
+        ]
+      },
+      {
+        ProtobufTestMessages.Proto3.ForeignMessage,
+        [
+          {1 , :none, :c, {:default, 0}, :int32},
+        ]
+      },
+      {
+        ProtobufTestMessages.Proto3.TestAllTypesProto3,
+        [
+          {1 , :none, :optional_int32   , {:default, 0}, :int32},
+          {2 , :none, :optional_int64   , {:default, 0}, :int64},
+          {3 , :none, :optional_uint32  , {:default, 0}, :uint32},
+          {4 , :none, :optional_uint64  , {:default, 0}, :uint64},
+          {5 , :none, :optional_sint32  , {:default, 0}, :sint32},
+          {6 , :none, :optional_sint64  , {:default, 0}, :sint64},
+          {7 , :none, :optional_fixed32 , {:default, 0}, :fixed32},
+          {8 , :none, :optional_fixed64 , {:default, 0}, :fixed64},
+          {9 , :none, :optional_sfixed32, {:default, 0}, :sfixed32},
+          {10, :none, :optional_sfixed64, {:default, 0}, :sfixed64},
+          {11, :none, :optional_float   , {:default, 0}, :float},
+          {12, :none, :optional_double  , {:default, 0}, :double},
+          {13, :none, :optional_bool    , {:default, false}, :bool},
+          {14, :none, :optional_string  , {:default, ""}, :string},
+          {15, :none, :optional_bytes   , {:default, <<>>}, :bytes},
+
+          {18, :none, :optional_nested_message, {:default, nil}, {:message, ProtobufTestMessages.Proto3.NestedMessage}},
+          {19, :none, :optional_foreign_message, {:default, nil}, {:message, ProtobufTestMessages.Proto3.ForeignMessage}},
+
+          {21, :none, :optional_nested_enum, {:default, :FOO}, {:enum, ProtobufTestMessages.Proto3.NestedEnum}},
+          {22, :none, :optional_foreign_enum, {:default, :FOREIGN_FOO}, {:enum, ProtobufTestMessages.Proto3.ForeignEnum}},
+
+          {24, :none, :optional_string_piece, {:default, ""}, :string},
+          {25, :none, :optional_cord, {:default, ""}, :string},
+
+          {27, :none, :recursive_message, {:default, nil}, {:message, ProtobufTestMessages.Proto3.TestAllTypesProto3}},
+
+          {31, :repeated, :repeated_int32, :packed, :int32},
+          {32, :repeated, :repeated_int64, :packed, :int64},
+          {33, :repeated, :repeated_uint32, :packed, :uint32},
+          {34, :repeated, :repeated_uint64, :packed, :uint64},
+          {35, :repeated, :repeated_sint32, :packed, :sint32},
+          {36, :repeated, :repeated_sint64, :packed, :sint64},
+          {37, :repeated, :repeated_fixed32, :packed, :fixed32},
+          {38, :repeated, :repeated_fixed64, :packed, :fixed64},
+          {39, :repeated, :repeated_sfixed32, :packed, :sfixed32},
+          {40, :repeated, :repeated_sfixed64, :packed, :sfixed64},
+          {41, :repeated, :repeated_float, :packed, :float},
+          {42, :repeated, :repeated_double, :packed, :double},
+          {43, :repeated, :repeated_bool, :packed, :bool},
+          {44, :repeated, :repeated_string, :unpacked, :string},
+          {45, :repeated, :repeated_bytes, :unpacked, :bytes},
+
+          {48, :repeated, :repeated_nested_message, :unpacked, {:message, ProtobufTestMessages.Proto3.NestedMessage}},
+          {49, :repeated, :repeated_foreign_message, :unpacked, {:message, ProtobufTestMessages.Proto3.ForeignMessage}},
+
+          {51, :repeated, :repeated_nested_enum, :packed, {:enum, ProtobufTestMessages.Proto3.NestedEnum}},
+          {52, :repeated, :repeated_foreign_enum, :packed, {:enum, ProtobufTestMessages.Proto3.ForeignEnum}},
+
+          {54, :repeated, :repeated_string_piece, :unpacked, :string},
+          {55, :repeated, :repeated_cord, :unpacked, :string},
+
+          {56, :none, :map_int32_int32, :map, {:int32, :int32}},
+          {57, :none, :map_int64_int64, :map, {:int64, :int64}},
+          {58, :none, :map_uint32_uint32, :map, {:uint32, :uint32}},
+          {59, :none, :map_uint64_uint64, :map, {:uint64, :uint64}},
+          {60, :none, :map_sint32_sint32, :map, {:sint32, :int32}},
+          {61, :none, :map_sint64_sint64, :map, {:sint64, :int64}},
+          {62, :none, :map_fixed32_fixed32, :map, {:fixed32, :fixed32}},
+          {63, :none, :map_fixed64_fixed64, :map, {:fixed64, :fixed64}},
+          {64, :none, :map_sfixed32_sfixed32, :map, {:sfixed32, :sfixed32}},
+          {65, :none, :map_sfixed64_sfixed64, :map, {:sfixed64, :sfixed64}},
+          {66, :none, :map_int32_float, :map, {:int32, :float}},
+          {67, :none, :map_int32_double, :map, {:int32, :double}},
+          {68, :none, :map_bool_bool, :map, {:bool, :bool}},
+          {69, :none, :map_string_string, :map, {:string, :string}},
+          {70, :none, :map_string_bytes, :map, {:string, :bytes}},
+          {71, :none, :map_string_nested_message, :map, {:string, {:message, ProtobufTestMessages.Proto3.NestedMessage}}},
+          {72, :none, :map_string_foreign_message, :map, {:string, {:message, ProtobufTestMessages.Proto3.ForeignMessage}}},
+          {73, :none, :map_string_nested_enum, :map, {:string, {:enum, ProtobufTestMessages.Proto3.NestedEnum}}},
+          {74, :none, :map_string_foreign_enum, :map, {:string, {:enum, ProtobufTestMessages.Proto3.ForeignEnum}}},
+
+          {111, :none, :oneof_uint32, {:oneof, :oneof_field}, :uint32},
+          {112, :none, :oneof_nested_message, {:oneof, :oneof_field}, {:message, ProtobufTestMessages.Proto3.NestedMessage}},
+          {113, :none, :oneof_string, {:oneof, :oneof_field}, :string},
+          {114, :none, :oneof_bytes, {:oneof, :oneof_field}, :bytes},
+          {115, :none, :oneof_bool, {:oneof, :oneof_field}, :bool},
+          {116, :none, :oneof_uint64, {:oneof, :oneof_field}, :uint64},
+          {117, :none, :oneof_float, {:oneof, :oneof_field}, :float},
+          {118, :none, :oneof_double, {:oneof, :oneof_field}, :double},
+          {119, :none, :oneof_enum, {:oneof, :oneof_field}, {:enum, ProtobufTestMessages.Proto3.NestedEnum}},
 
         ]
       }
