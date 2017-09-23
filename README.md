@@ -8,10 +8,12 @@ output, the corresponding tests are skipped.
 
 Here's how to launch the conformance test:
 
-* Get conformance-test-runner (https://github.com/google/protobuf/tree/master/conformance)
-* `mix protox.conformance --runner=/path/to/conformance-test-runner`
+* Get conformance-test-runner sources (https://github.com/google/protobuf/archive/v3.4.1.tar.gz)
+* Compile conformance-test-runner:
+  `tar xf protobuf-3.4.1.tar.gz && cd protobuf-3.4.1 && ./autogen.sh && ./configure && make -j && cd conformance && make -j`
+* `mix protox.conformance --runner=/path/to/protobuf-3.4.1/conformance/conformance-test-runner`.
   A report will be generated in a file named `conformance_report.txt`.
-  If everything's fine, something like the following should be displayed (protobuf 3.4.1):
+  If everything's fine, the following text should be displayed (protobuf 3.4.1):
 
   ```
   CONFORMANCE TEST BEGIN ====================================
