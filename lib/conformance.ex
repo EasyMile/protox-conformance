@@ -58,6 +58,9 @@ defmodule Protox.Conformance.Escript do
       "protobuf_test_messages.proto2.TestAllTypesProto2" ->
         ProtobufTestMessages.Proto2.TestAllTypesProto2
 
+      "conformance.FailureSet" ->
+        Conformance.FailureSet
+
       "" ->
         ProtobufTestMessages.Proto3.TestAllTypesProto3
     end
@@ -86,6 +89,15 @@ defmodule Protox.Conformance.Escript do
 
       {:PROTOBUF, {:json_payload, _}} ->
         "json output"
+
+      {:PROTOBUF, nil} ->
+        "unset payload"
+
+      {:PROTOBUF, {:text_payload, _}} ->
+        "text output"
+
+      {:TEXT, _} ->
+        "text output"
     end
     IO.binwrite(log_file, "SKIPPED\n")
     IO.binwrite(log_file, "Reason: #{inspect skip_reason}\n")

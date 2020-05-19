@@ -13,6 +13,7 @@ defmodule Protox.Conformance.Defs do
           {0, :UNSPECIFIED},
           {1, :PROTOBUF},
           {2, :JSON},
+          {4, :TEXT}
         ]
       },
       {
@@ -52,12 +53,19 @@ defmodule Protox.Conformance.Defs do
     ],
     messages: [
       {
+        Conformance.FailureSet,
+        [
+          {1, :none, :failure, {:default, ""}, :string}
+        ]
+      },
+      {
         Conformance.ConformanceRequest,
         [
           {1, :none, :protobuf_payload, {:oneof, :payload}, :bytes},
           {2, :none, :json_payload, {:oneof, :payload}, :string},
           {3, :none, :requested_output_format, {:default, :UNSPECIFIED}, {:enum, Conformance.WireFormat}},
-          {4, :none, :message_type, {:default, ""}, :string}
+          {4, :none, :message_type, {:default, ""}, :string},
+          {8, :none, :text_payload, {:oneof, :payload}, :string}
         ]
       },
       {
