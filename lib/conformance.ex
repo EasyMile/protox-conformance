@@ -113,7 +113,7 @@ defmodule Protox.Conformance.Escript do
   end
 
   defp dump_data(data, log_file) do
-    IO.binwrite(log_file, "Received #{inspect(data)}\n")
+    IO.binwrite(log_file, "Received #{inspect(data, limit: :infinity)}\n")
     data
   end
 
