@@ -12,6 +12,7 @@ defmodule Protox.Conformance.Defs do
           {0, :UNSPECIFIED},
           {1, :PROTOBUF},
           {2, :JSON},
+          {3, :JSPB },
           {4, :TEXT}
         ]
       },
@@ -48,6 +49,17 @@ defmodule Protox.Conformance.Defs do
           {1, :FOREIGN_BAR},
           {2, :FOREIGN_BAZ}
         ]
+      },
+      {
+        Conformance.TestCategory,
+        [
+          {0, :UNSPECIFIED_TEST},
+          {1, :BINARY_TEST},
+          {2, :JSON_TEST},
+          {3, :JSON_IGNORE_UNKNOWN_PARSING_TEST},
+          {4, :JSPB_TEST},
+          {5, :TEXT_FORMAT_TEST}
+        ]
       }
     ],
     messages: [
@@ -65,6 +77,8 @@ defmodule Protox.Conformance.Defs do
           {3, :none, :requested_output_format, {:default, :UNSPECIFIED},
            {:enum, Conformance.WireFormat}},
           {4, :none, :message_type, {:default, ""}, :string},
+          {5, :none, :test_category, {:default, :UNSPECIFIED_TEST},
+           {:enum, Conformance.TestCategory}},
           {8, :none, :text_payload, {:oneof, :payload}, :string}
         ]
       },
