@@ -72,7 +72,9 @@ defmodule Protox.Conformance.Escript do
     case proto_type.decode(payload) do
       {:ok, msg} ->
         IO.binwrite(log_file, "Parse: success.\n")
+        IO.binwrite(log_file, "Message: #{inspect(msg, limit: :infinity)}\n")
         encoded_payload = msg |> Protox.Encode.encode() |> :binary.list_to_bin()
+        IO.binwrite(log_file, "Encoded payload: #{inspect(encoded_payload, limit: :infinity)}\n")
         %Conformance.ConformanceResponse{result: {:protobuf_payload, encoded_payload}}
 
       {:error, reason} ->
