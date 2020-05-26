@@ -76,12 +76,14 @@ defmodule Protox.Conformance.Defs do
     messages: [
       {
         Conformance.FailureSet,
+        :proto3,
         [
           {1, :none, :failure, {:default, ""}, :string}
         ]
       },
       {
         Conformance.ConformanceRequest,
+        :proto3,
         [
           {1, :none, :protobuf_payload, {:oneof, :payload}, :bytes},
           {2, :none, :json_payload, {:oneof, :payload}, :string},
@@ -95,6 +97,7 @@ defmodule Protox.Conformance.Defs do
       },
       {
         Conformance.ConformanceResponse,
+        :proto3,
         [
           {1, :none, :parse_error, {:oneof, :result}, :string},
           {6, :none, :serialize_error, {:oneof, :result}, :string},
@@ -106,6 +109,7 @@ defmodule Protox.Conformance.Defs do
       },
       {
         ProtobufTestMessages.Proto2.NestedMessage,
+        :proto2,
         [
           {1, :none, :a, {:default, nil}, :int32},
           {2, :none, :corecursive, {:default, nil},
@@ -114,12 +118,14 @@ defmodule Protox.Conformance.Defs do
       },
       {
         ProtobufTestMessages.Proto2.ForeignMessage,
+        :proto2,
         [
           {1, :none, :c, {:default, nil}, :int32}
         ]
       },
       {
         ProtobufTestMessages.Proto2.TestAllTypesProto2,
+        :proto2,
         [
           {1, :none, :optional_int32, {:default, nil}, :int32},
           {2, :none, :optional_int64, {:default, nil}, :int64},
@@ -241,6 +247,7 @@ defmodule Protox.Conformance.Defs do
       },
       {
         ProtobufTestMessages.Proto3.NestedMessage,
+        :proto3,
         [
           {1, :none, :a, {:default, 0}, :int32},
           {2, :none, :corecursive, {:default, nil},
@@ -249,12 +256,14 @@ defmodule Protox.Conformance.Defs do
       },
       {
         ProtobufTestMessages.Proto3.ForeignMessage,
+        :proto3,
         [
           {1, :none, :c, {:default, 0}, :int32}
         ]
       },
       {
         ProtobufTestMessages.Proto3.TestAllTypesProto3,
+        :proto3,
         [
           {1, :none, :optional_int32, {:default, 0}, :int32},
           {2, :none, :optional_int64, {:default, 0}, :int64},

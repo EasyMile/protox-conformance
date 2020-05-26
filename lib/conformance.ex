@@ -46,7 +46,7 @@ defmodule Protox.Conformance.Escript do
        ) do
     IO.binwrite(log_file, "Will parse protobuf\n")
 
-    if Conformance.ConformanceRequest.get_unknown_fields(req) != [] do
+    if Conformance.ConformanceRequest.unknown_fields(req) != [] do
       IO.binwrite(log_file, "Warning, request contains unknown fields\n")
     end
 
